@@ -6,6 +6,7 @@ python-dotenv
 groq
 sentence-transformers
 pydantic
+pydantic[email]
 httpx
 pytest
 pytest-asyncio
