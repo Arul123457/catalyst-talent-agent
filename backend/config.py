@@ -29,6 +29,8 @@ INTEREST_WEIGHT: float = float(os.getenv("INTEREST_WEIGHT", "0.3"))
 EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
 VECTOR_DIMENSIONS: int = int(os.getenv("VECTOR_DIMENSIONS", "384"))
 
+APP_ENV = os.getenv("APP_ENV", "development")
+
 # CORS Configuration
 ALLOWED_ORIGINS: list[str] = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
 
