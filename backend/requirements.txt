@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+motor
+pymongo
+python-dotenv
+groq
+sentence-transformers
+pydantic
+httpx
+pytest
+pytest-asyncio
+bcrypt==4.0.1
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
