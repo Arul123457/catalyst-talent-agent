@@ -177,8 +177,8 @@ function About() {
             {/* Deployment */}
             <div className="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition">
               <div className="text-4xl mb-3">🚀</div>
-              <h3 className="text-xl font-bold mb-2">Railway + Vercel</h3>
-              <p className="text-gray-400 text-sm">CI/CD — auto-deploy on git push to main</p>
+              <h3 className="text-xl font-bold mb-2">Hugging Face + Vercel</h3>
+              <p className="text-gray-400 text-sm">CI/CD — FastAPI backend on HF Spaces, React frontend on Vercel</p>
             </div>
           </div>
         </div>
@@ -247,7 +247,7 @@ function About() {
             Built for Catalyst Hackathon by <span className="text-white font-semibold">Arutselvan S</span> — deccan.ai 2025
           </p>
           <p className="text-gray-500">
-            Stack: Groq + MongoDB Atlas + FastAPI + React
+            Stack: Groq + MongoDB Atlas + FastAPI + React + Hugging Face Spaces
           </p>
         </div>
       </div>
