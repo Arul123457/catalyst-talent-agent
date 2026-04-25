@@ -1,3 +1,6 @@
+import os
+from config import APP_ENV
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -24,13 +27,15 @@ async def lifespan(app: FastAPI):
     # Shutdown
     await close_mongo_connection()
 
-
 app = FastAPI(
-    title="Catalyst Talent Scouting Agent",
-    description="AI-powered talent scouting backend",
+    title="Catalyst Talent Agent API",
+    description="AI-Powered Talent Scouting Agent",
     version="1.0.0",
-    lifespan=lifespan
+    docs_url="/docs" if APP_ENV != "production" else None,
+    redoc_url="/redoc" if APP_ENV != "production" else None,
+    openapi_url="/openapi.json" if APP_ENV != "production" else None
 )
+
 
 # CORS middleware
 # Hardcoded origins for common development and production environments
