@@ -62,6 +62,8 @@ def get_collection(name: str) -> AsyncIOMotorCollection:
 
 def get_db():
     """Get synchronous database instance for auth operations"""
+    if sync_database is None:
+        raise RuntimeError("Database not initialized. Make sure the application has started up properly.")
     return sync_database
 
 

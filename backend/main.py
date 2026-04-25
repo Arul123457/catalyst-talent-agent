@@ -31,6 +31,7 @@ app = FastAPI(
     title="Catalyst Talent Agent API",
     description="AI-Powered Talent Scouting Agent",
     version="1.0.0",
+    lifespan=lifespan,
     docs_url="/docs" if APP_ENV != "production" else None,
     redoc_url="/redoc" if APP_ENV != "production" else None,
     openapi_url="/openapi.json" if APP_ENV != "production" else None
