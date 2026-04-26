@@ -333,9 +333,9 @@ function About() {
             <Reveal delay={250}>
               <Card hover className="p-6">
                 <Globe className="w-12 h-12 text-green-400 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Railway + Vercel</h3>
-                <p className="text-gray-400 text-sm mb-4">Production deployment</p>
-                <Badge variant="muted" size="sm">Auto-deploy · Global CDN</Badge>
+                <h3 className="text-xl font-semibold mb-2">Hugging Face Spaces</h3>
+                <p className="text-gray-400 text-sm mb-4">Production deployment platform</p>
+                <Badge variant="muted" size="sm">Auto-deploy · GPU support</Badge>
               </Card>
             </Reveal>
           </div>
