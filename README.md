@@ -371,7 +371,7 @@ catalyst-talent-agent/
 
 ## 📹 Demo Video
 
-[Watch 4-minute walkthrough → Loom Link]
+[Watch 5-minute walkthrough → https://www.loom.com/share/6792172ed2b34bd58cc5f074e559b5c5]
 
 ---
 
