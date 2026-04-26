@@ -6,7 +6,6 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 import Avatar from '../components/Avatar';
-import Reveal from '../components/Reveal';
 
 function Shortlist() {
   const navigate = useNavigate();
@@ -113,10 +112,16 @@ function Shortlist() {
     return `#${rank}`;
   };
 
-  const getScoreColor = (score) => {
-    if (score >= 70) return 'text-green-400 bg-green-500';
-    if (score >= 50) return 'text-yellow-400 bg-yellow-500';
-    return 'text-red-400 bg-red-500';
+  const getScoreTextColor = (score) => {
+    if (score >= 70) return 'text-green-400';
+    if (score >= 50) return 'text-yellow-400';
+    return 'text-red-400';
+  };
+
+  const getScoreBgColor = (score) => {
+    if (score >= 70) return 'bg-green-500';
+    if (score >= 50) return 'bg-yellow-500';
+    return 'bg-red-500';
   };
 
   const getCombinedScoreColor = (score) => {
@@ -182,38 +187,35 @@ function Shortlist() {
     <div className="min-h-screen bg-gray-950 text-white py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <Reveal>
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-4xl font-bold">Ranked Shortlist</h1>
-                <Badge variant="primary" size="lg">
-                  {shortlist.length} {shortlist.length === 1 ? 'Candidate' : 'Candidates'}
-                </Badge>
-              </div>
-              <p className="text-gray-400">Sorted by combined match and interest scores</p>
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-4xl font-bold">Ranked Shortlist</h1>
+              <Badge variant="primary" size="lg">
+                {shortlist.length} {shortlist.length === 1 ? 'Candidate' : 'Candidates'}
+              </Badge>
             </div>
-            <div className="flex gap-3">
-              <Button
-                onClick={() => navigate('/scout')}
-                variant="ghost"
-                size="md"
-                icon={ArrowLeft}
-                iconPosition="left"
-              >
-                Back to Scout
-              </Button>
-              <Button
-                onClick={handleExportCSV}
-                variant="primary"
-                size="md"
-                icon={Download}
-              >
-                Export CSV
-              </Button>
-            </div>
+            <p className="text-gray-400">Sorted by combined match and interest scores</p>
           </div>
-        </Reveal>
+          <div className="flex gap-3">
+            <Button
+              onClick={() => navigate('/scout')}
+              variant="ghost"
+              size="md"
+              icon={ArrowLeft}
+            >
+              Back to Scout
+            </Button>
+            <Button
+              onClick={handleExportCSV}
+              variant="primary"
+              size="md"
+              icon={Download}
+            >
+              Export CSV
+            </Button>
+          </div>
+        </div>
 
         {error && (
           <div className="mb-6 p-4 bg-red-500/10 border border-red-500 rounded-xl text-red-400">
@@ -225,79 +227,90 @@ function Shortlist() {
         <div className="hidden lg:block">
           <Card className="overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-900 border-b border-gray-800">
+              <table className="w-full" style={{ tableLayout: 'fixed' }}>
+                <thead className="bg-gray-900 border-b border-gray-800 sticky top-0 z-10">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Rank</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Candidate</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Match</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Interest</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Combined</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Narrative</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-400">Next Step</th>
+                    <th className="px-4 py-4 text-left text-sm font-semibold text-gray-400" style={{ width: '6%' }}>Rank</th>
+                    <th className="px-4 py-4 text-left text-sm font-semibold text-gray-400" style={{ width: '24%' }}>Candidate</th>
+                    <th className="px-4 py-4 text-left text-sm font-semibold text-gray-400" style={{ width: '12%' }}>Match</th>
+                    <th className="px-4 py-4 text-left text-sm font-semibold text-gray-400" style={{ width: '12%' }}>Interest</th>
+                    <th className="px-4 py-4 text-left text-sm font-semibold text-gray-400" style={{ width: '10%' }}>Combined</th>
+                    <th className="px-4 py-4 text-left text-sm font-semibold text-gray-400" style={{ width: '24%' }}>Narrative</th>
+                    <th className="px-4 py-4 text-left text-sm font-semibold text-gray-400" style={{ width: '12%' }}>Next Step</th>
                   </tr>
                 </thead>
                 <tbody>
                   {shortlist.map((candidate, idx) => (
-                    <Reveal key={candidate.candidate_id} delay={idx * 30}>
-                      <tr className="border-b border-gray-800 hover:bg-gray-900/50 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="text-2xl">{getRankEmoji(idx + 1)}</div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <Avatar name={candidate.name} size="md" />
-                            <div>
-                              <p className="font-bold text-white">{candidate.name}</p>
-                              <p className="text-sm text-gray-400">{candidate.current_role}</p>
-                              <p className="text-xs text-gray-500">{candidate.location}</p>
-                            </div>
+                    <tr 
+                      key={candidate.candidate_id}
+                      className="border-b border-gray-800 hover:bg-gray-900/50 transition-colors"
+                      style={{ 
+                        animation: 'fadeSlideUp 0.4s ease both', 
+                        animationDelay: `${idx * 40}ms` 
+                      }}
+                    >
+                      <td className="px-4 py-4 align-top">
+                        <div className="text-2xl">{getRankEmoji(idx + 1)}</div>
+                      </td>
+                      <td className="px-4 py-4 align-top" style={{ minWidth: '200px' }}>
+                        <div className="flex items-start gap-3">
+                          <Avatar name={candidate.name} size="md" />
+                          <div className="min-w-0 flex-1">
+                            <p className="font-bold text-white truncate">{candidate.name}</p>
+                            <p className="text-sm text-gray-400 truncate">{candidate.current_role}</p>
+                            <p className="text-xs text-gray-500 truncate">{candidate.location}</p>
                           </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div>
-                            <p className={`font-semibold mb-2 ${getScoreColor(candidate.match_score).split(' ')[0]}`}>
-                              {candidate.match_score?.toFixed(1)}%
-                            </p>
-                            <div className="w-24 bg-gray-700 rounded-full h-2">
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 align-top">
+                        <div>
+                          <p className={`font-semibold mb-2 ${getScoreTextColor(candidate.match_score)}`}>
+                            {candidate.match_score?.toFixed(1)}%
+                          </p>
+                          <div className="w-full max-w-[100px]">
+                            <div className="w-full bg-gray-700 rounded-full h-2">
                               <div
-                                className={`h-2 rounded-full ${getScoreColor(candidate.match_score).split(' ')[1]}`}
+                                className={`h-2 rounded-full ${getScoreBgColor(candidate.match_score)}`}
                                 style={{ width: `${candidate.match_score}%` }}
                               />
                             </div>
                           </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div>
-                            <p className={`font-semibold mb-2 ${getScoreColor(candidate.interest_score).split(' ')[0]}`}>
-                              {candidate.interest_score?.toFixed(1)}%
-                            </p>
-                            <div className="w-24 bg-gray-700 rounded-full h-2">
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 align-top">
+                        <div>
+                          <p className={`font-semibold mb-2 ${getScoreTextColor(candidate.interest_score)}`}>
+                            {candidate.interest_score?.toFixed(1)}%
+                          </p>
+                          <div className="w-full max-w-[100px]">
+                            <div className="w-full bg-gray-700 rounded-full h-2">
                               <div
-                                className={`h-2 rounded-full ${getScoreColor(candidate.interest_score).split(' ')[1]}`}
+                                className={`h-2 rounded-full ${getScoreBgColor(candidate.interest_score)}`}
                                 style={{ width: `${candidate.interest_score}%` }}
                               />
                             </div>
                           </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <p className={`text-3xl font-bold ${getCombinedScoreColor(candidate.combined_score)}`}>
-                            {candidate.combined_score?.toFixed(1)}
-                          </p>
-                        </td>
-                        <td className="px-6 py-4 max-w-xs">
-                          <p className="text-sm text-gray-300 line-clamp-2 mb-2">
-                            {candidate.narrative?.substring(0, 100)}...
-                          </p>
-                          <button
-                            onClick={() => setSelectedNarrative(candidate)}
-                            className="text-green-400 hover:text-green-300 text-sm font-semibold transition-colors"
-                          >
-                            View Full →
-                          </button>
-                        </td>
-                        <td className="px-6 py-4">
-                          <Badge variant={getNextStepVariant(candidate.next_step)} size="sm" className="mb-2">
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 align-top">
+                        <p className={`text-3xl font-bold ${getCombinedScoreColor(candidate.combined_score)}`}>
+                          {candidate.combined_score?.toFixed(1)}
+                        </p>
+                      </td>
+                      <td className="px-4 py-4 align-top">
+                        <p className="text-sm text-gray-300 line-clamp-2 mb-2">
+                          {candidate.narrative?.substring(0, 80)}...
+                        </p>
+                        <button
+                          onClick={() => setSelectedNarrative(candidate)}
+                          className="text-green-400 hover:text-green-300 text-sm font-semibold transition-colors"
+                        >
+                          View Full →
+                        </button>
+                      </td>
+                      <td className="px-4 py-4 align-top">
+                        <div className="space-y-2">
+                          <Badge variant={getNextStepVariant(candidate.next_step)} size="sm">
                             {candidate.next_step}
                           </Badge>
                           <button
@@ -317,9 +330,9 @@ function Shortlist() {
                               </span>
                             )}
                           </button>
-                        </td>
-                      </tr>
-                    </Reveal>
+                        </div>
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
@@ -330,77 +343,82 @@ function Shortlist() {
         {/* Mobile Cards */}
         <div className="lg:hidden space-y-4">
           {shortlist.map((candidate, idx) => (
-            <Reveal key={candidate.candidate_id} delay={idx * 50}>
-              <Card className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="text-3xl">{getRankEmoji(idx + 1)}</div>
-                    <Avatar name={candidate.name} size="md" />
-                    <div>
-                      <h3 className="font-bold text-lg text-white">{candidate.name}</h3>
-                      <p className="text-sm text-gray-400">{candidate.current_role}</p>
-                      <p className="text-xs text-gray-500">{candidate.location}</p>
-                    </div>
+            <Card 
+              key={candidate.candidate_id} 
+              className="p-6"
+              style={{ 
+                animation: 'fadeSlideUp 0.4s ease both', 
+                animationDelay: `${idx * 50}ms` 
+              }}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl">{getRankEmoji(idx + 1)}</div>
+                  <Avatar name={candidate.name} size="md" />
+                  <div>
+                    <h3 className="font-bold text-lg text-white">{candidate.name}</h3>
+                    <p className="text-sm text-gray-400">{candidate.current_role}</p>
+                    <p className="text-xs text-gray-500">{candidate.location}</p>
                   </div>
                 </div>
+              </div>
 
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <p className="text-xs text-gray-400 mb-1">Match</p>
-                    <p className={`text-xl font-bold ${getScoreColor(candidate.match_score).split(' ')[0]}`}>
-                      {candidate.match_score?.toFixed(1)}%
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400 mb-1">Interest</p>
-                    <p className={`text-xl font-bold ${getScoreColor(candidate.interest_score).split(' ')[0]}`}>
-                      {candidate.interest_score?.toFixed(1)}%
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400 mb-1">Combined</p>
-                    <p className={`text-xl font-bold ${getCombinedScoreColor(candidate.combined_score)}`}>
-                      {candidate.combined_score?.toFixed(1)}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <p className="text-sm text-gray-300 line-clamp-3 mb-2">
-                    {candidate.narrative}
+              <div className="grid grid-cols-3 gap-4 mb-4">
+                <div>
+                  <p className="text-xs text-gray-400 mb-1">Match</p>
+                  <p className={`text-xl font-bold ${getScoreTextColor(candidate.match_score)}`}>
+                    {candidate.match_score?.toFixed(1)}%
                   </p>
-                  <button
-                    onClick={() => setSelectedNarrative(candidate)}
-                    className="text-green-400 hover:text-green-300 text-sm font-semibold transition-colors"
-                  >
-                    View Full Narrative →
-                  </button>
                 </div>
+                <div>
+                  <p className="text-xs text-gray-400 mb-1">Interest</p>
+                  <p className={`text-xl font-bold ${getScoreTextColor(candidate.interest_score)}`}>
+                    {candidate.interest_score?.toFixed(1)}%
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 mb-1">Combined</p>
+                  <p className={`text-xl font-bold ${getCombinedScoreColor(candidate.combined_score)}`}>
+                    {candidate.combined_score?.toFixed(1)}
+                  </p>
+                </div>
+              </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                  <Badge variant={getNextStepVariant(candidate.next_step)} size="sm">
-                    {candidate.next_step}
-                  </Badge>
-                  <button
-                    onClick={() => handleRegenerateNarrative(candidate)}
-                    disabled={regeneratingId === candidate.candidate_id}
-                    className="text-xs text-gray-400 hover:text-green-400 disabled:text-gray-600 transition-colors flex items-center gap-1"
-                  >
-                    {regeneratingId === candidate.candidate_id ? (
-                      <>
-                        <Loader2 className="w-3 h-3 animate-spin" />
-                        Regenerating...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-3 h-3" />
-                        Regenerate
-                      </>
-                    )}
-                  </button>
-                </div>
-              </Card>
-            </Reveal>
+              <div className="mb-4">
+                <p className="text-sm text-gray-300 line-clamp-3 mb-2">
+                  {candidate.narrative}
+                </p>
+                <button
+                  onClick={() => setSelectedNarrative(candidate)}
+                  className="text-green-400 hover:text-green-300 text-sm font-semibold transition-colors"
+                >
+                  View Full Narrative →
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                <Badge variant={getNextStepVariant(candidate.next_step)} size="sm">
+                  {candidate.next_step}
+                </Badge>
+                <button
+                  onClick={() => handleRegenerateNarrative(candidate)}
+                  disabled={regeneratingId === candidate.candidate_id}
+                  className="text-xs text-gray-400 hover:text-green-400 disabled:text-gray-600 transition-colors flex items-center gap-1"
+                >
+                  {regeneratingId === candidate.candidate_id ? (
+                    <>
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      Regenerating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-3 h-3" />
+                      Regenerate
+                    </>
+                  )}
+                </button>
+              </div>
+            </Card>
           ))}
         </div>
       </div>
