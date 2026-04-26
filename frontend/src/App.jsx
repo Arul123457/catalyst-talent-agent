@@ -1,20 +1,26 @@
-import { Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
-import Navbar from './components/Navbar'
-import ProtectedRoute from './components/ProtectedRoute'
-import Landing from './pages/Landing'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import Scout from './pages/Scout'
-import Shortlist from './pages/Shortlist'
-import About from './pages/About'
-import CandidateDashboard from './pages/CandidateDashboard'
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import Landing from './pages/Landing';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Scout from './pages/Scout';
+import Shortlist from './pages/Shortlist';
+import About from './pages/About';
+import CandidateDashboard from './pages/CandidateDashboard';
 
 function App() {
+  const location = useLocation();
+  
+  // Pages that don't need the navbar (they have their own layout)
+  const noNavbarPages = ['/login', '/register'];
+  const showNavbar = !noNavbarPages.includes(location.pathname);
+
   return (
     <AuthProvider>
       <div className="min-h-screen bg-gray-950">
-        <Navbar />
+        {showNavbar && <Navbar />}
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
@@ -47,7 +53,7 @@ function App() {
         </Routes>
       </div>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
